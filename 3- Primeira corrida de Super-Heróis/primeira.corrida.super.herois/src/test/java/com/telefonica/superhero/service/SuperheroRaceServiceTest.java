@@ -2,6 +2,8 @@ package com.telefonica.superhero.service;
 
 import com.telefonica.superhero.rest.dto.RaceData;
 import com.telefonica.superhero.rest.dto.ResponseDTO;
+import com.telefonica.superhero.service.impl.ReaderLogServiceImpl;
+import com.telefonica.superhero.service.impl.SuperheroRaceServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,13 +37,11 @@ public class SuperheroRaceServiceTest {
 
     private static final String SUPERMAN = "Superman";
 
-    private static final String FILE_NAME = "fileTest.txt";
-
     @InjectMocks
-    public SuperheroRaceService service;
+    public SuperheroRaceServiceImpl service;
 
     @Mock
-    private ReaderLogService readerLogService;
+    private ReaderLogServiceImpl readerLogService;
 
     @Test
     public void getData() throws ParseException {
@@ -49,11 +49,11 @@ public class SuperheroRaceServiceTest {
         RaceData raceData = new RaceData();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         raceData.setHour(LocalTime.parse("23:49:08.277", formatter));
-        raceData.setSuperHero(String.format("%s-%s" + THIRTY_EIGHT, SUPERMAN));
+        raceData.setSuperHero(String.format("%d–%s", THIRTY_EIGHT, SUPERMAN));
         raceData.setBackNumber(ONE);
         DateFormat dateFormat = new SimpleDateFormat("m:ss.SSS");
         raceData.setLapTime(dateFormat.parse("1:02.852").toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
-        raceData.setAverageLapSpeed(44.275);
+        raceData.setAverageLapSpeed(FORTY_FOUR_AND_FOUR_SEVENTY_FIVE);
         raceDataList.add(raceData);
 
 
@@ -72,7 +72,7 @@ public class SuperheroRaceServiceTest {
         dto.setSuperheroAverageSpeedDuringRace(FORTY_FOUR_AND_FOUR_SEVENTY_FIVE);
         responseDTOs.add(dto);
 
-        when(this.readerLogService.getData(FILE_NAME)).thenReturn(raceDataList);
+        when(this.readerLogService.getData(any())).thenReturn(raceDataList);
 
         var response = this.service.getData();
 

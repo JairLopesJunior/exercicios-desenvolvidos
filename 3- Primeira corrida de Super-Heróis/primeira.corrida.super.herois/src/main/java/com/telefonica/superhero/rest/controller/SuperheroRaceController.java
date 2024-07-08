@@ -1,7 +1,7 @@
 package com.telefonica.superhero.rest.controller;
 
 import com.telefonica.superhero.rest.dto.ResponseDTO;
-import com.telefonica.superhero.service.SuperheroRaceService;
+import com.telefonica.superhero.service.impl.SuperheroRaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +17,14 @@ import java.util.List;
 @RequestMapping("/api/superheroes")
 public class SuperheroRaceController {
 
-    private SuperheroRaceService service;
+    private SuperheroRaceServiceImpl service;
 
     /**
      * Constructor for SuperheroRaceController.
      * @param service The superhero race service to inject.
      */
     @Autowired
-    public SuperheroRaceController(SuperheroRaceService service) {
+    public SuperheroRaceController(SuperheroRaceServiceImpl service) {
         this.service = service;
     }
 

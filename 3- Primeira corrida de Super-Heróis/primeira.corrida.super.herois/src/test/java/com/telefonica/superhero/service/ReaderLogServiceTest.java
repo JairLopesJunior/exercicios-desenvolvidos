@@ -1,13 +1,12 @@
 package com.telefonica.superhero.service;
 
 import com.telefonica.superhero.rest.dto.RaceData;
+import com.telefonica.superhero.service.impl.ReaderLogServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,11 +21,18 @@ import static org.hamcrest.Matchers.*;
 @ExtendWith(MockitoExtension.class)
 public class ReaderLogServiceTest {
 
-    @InjectMocks
-    public ReaderLogService service;
+    private static final Integer ONE = 1;
 
-    @Mock
-    private FileReader fileReader;
+    private static final Integer THIRTY_EIGHT = 38;
+
+    private static final String SUPERMAN = "Superman";
+
+    private static final String FILE_NAME = "fileTest.txt";
+
+    private static final Double FORTY_FOUR_AND_FOUR_SEVENTY_FIVE = 44.275;
+
+    @InjectMocks
+    public ReaderLogServiceImpl service;
 
     @Test
     public void getData_success() throws ParseException {
@@ -34,14 +40,14 @@ public class ReaderLogServiceTest {
         RaceData raceData = new RaceData();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         raceData.setHour(LocalTime.parse("23:49:08.277", formatter));
-        raceData.setSuperHero("038–Superman");
-        raceData.setBackNumber(1);
+        raceData.setSuperHero(String.format("%d–%s", THIRTY_EIGHT, SUPERMAN));
+        raceData.setBackNumber(ONE);
         DateFormat dateFormat = new SimpleDateFormat("m:ss.SSS");
         raceData.setLapTime(dateFormat.parse("1:02.852").toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
-        raceData.setAverageLapSpeed(44.275);
+        raceData.setAverageLapSpeed(FORTY_FOUR_AND_FOUR_SEVENTY_FIVE);
         raceDataList.add(raceData);
 
-        List<RaceData> result = this.service.getData("fileTest.txt");
+        List<RaceData> result = this.service.getData(FILE_NAME);
 
         assertThat(result, notNullValue());
         assertThat(result, is(equalTo(raceDataList)));
