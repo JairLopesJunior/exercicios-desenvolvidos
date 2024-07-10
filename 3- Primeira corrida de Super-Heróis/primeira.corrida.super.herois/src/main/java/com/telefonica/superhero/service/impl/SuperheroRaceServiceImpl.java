@@ -11,6 +11,9 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of SuperheroRaceService for processing superhero race data.
+ */
 @Service
 public class SuperheroRaceServiceImpl implements SuperheroRaceService {
 
@@ -26,11 +29,21 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
 
     private ReaderLogServiceImpl readerLogService;
 
+    /**
+     * Constructor injection of ReaderLogServiceImpl.
+     *
+     * @param readerLogService Instance of ReaderLogServiceImpl to retrieve race data.
+     */
     @Autowired
     public SuperheroRaceServiceImpl(ReaderLogServiceImpl readerLogService) {
         this.readerLogService = readerLogService;
     }
 
+    /**
+     * Retrieves processed race data and calculates race statistics.
+     *
+     * @return A sorted list of ResponseDTO objects containing race statistics.
+     */
     public List<ResponseDTO> getData() {
         var raceDataList = this.readerLogService.getData(FILE_NAME);
 
@@ -50,6 +63,13 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
         return this.getFinishingPosition(responseDTOS);
     }
 
+    /**
+     * Creates ResponseDTO objects from grouped race data and calculates statistics.
+     *
+     * @param groupedBySuperHero Map grouping RaceData by superhero.
+     * @param bestLapRace        RaceData object representing the superhero with the best lap time.
+     * @return List of ResponseDTO objects containing race statistics.
+     */
     private List<ResponseDTO> getResponseDTO(Map<String, List<RaceData>> groupedBySuperHero, RaceData bestLapRace) {
         Integer backNumber = ZERO;
         ResponseDTO dto = new ResponseDTO();
@@ -89,6 +109,12 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
         return responseDTOS;
     }
 
+    /**
+     * Sets finishing positions based on the order of ResponseDTO objects.
+     *
+     * @param responseDTOS List of ResponseDTO objects to set finishing positions.
+     * @return Updated list of ResponseDTO objects with finishing positions.
+     */
     private List<ResponseDTO> getFinishingPosition(List<ResponseDTO> responseDTOS) {
         for (int i = ZERO; i < responseDTOS.size(); i++) {
             responseDTOS.get(i).setFinishingPosition((i + ONE));
@@ -96,6 +122,12 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
         return responseDTOS;
     }
 
+    /**
+     * Calculates the total duration of all laps in a race.
+     *
+     * @param list List of RaceData objects representing laps of a race.
+     * @return Total duration of all laps.
+     */
     private Duration getTotalDuration(List<RaceData> list) {
         return list.stream()
                 .filter(r -> r.getLapTime() != null)

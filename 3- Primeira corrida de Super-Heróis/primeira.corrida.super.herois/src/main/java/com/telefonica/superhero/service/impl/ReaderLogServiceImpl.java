@@ -16,6 +16,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Implementation of ReaderLogService for processing race data from a log file.
+ */
 @Service
 public class ReaderLogServiceImpl implements ReaderLogService {
 
@@ -39,6 +42,13 @@ public class ReaderLogServiceImpl implements ReaderLogService {
 
     private static final String MESSAGE_ERROR = "Error processing race data file";
 
+    /**
+     * Retrieves race data from a specified log file.
+     *
+     * @param fileName The name of the log file containing race data.
+     * @return A list of RaceData objects parsed from the log file.
+     * @throws CustomRaceDataException If there is an error processing the race data file.
+     */
     public List<RaceData> getData(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String linha;
