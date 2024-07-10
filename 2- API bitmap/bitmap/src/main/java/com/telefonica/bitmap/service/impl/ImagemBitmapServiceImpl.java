@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implementation of ImagemBitmapService interface for processing bitmap images.
+ */
 @Service
 public class ImagemBitmapServiceImpl implements ImagemBitmapService {
 
@@ -19,6 +22,11 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
 
     private static final int FIFTEEN = 15;
 
+    /**
+     * Processes a list of ImagemBitmapDTO objects to generate a list of ResponseDTO objects.
+     * @param bitmapList List of ImagemBitmapDTO objects representing bitmap data.
+     * @return List of ResponseDTO objects containing processing results.
+     */
     public List<ResponseDTO> getData(List<ImagemBitmapDTO> bitmapList) {
         Map<Integer, Integer> countMap = new HashMap<>();
         initializeBitmap(countMap);
@@ -28,12 +36,21 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
         return getResponse(countMap);
     }
 
+    /**
+     * Initializes a map with integer keys and values set to zero.
+     * @param countMap Map to initialize, where keys represent bitmap values and values represent counts.
+     */
     private void initializeBitmap(Map<Integer, Integer> countMap) {
         for (int i = ZERO; i <= FIFTEEN; i++) {
             countMap.put(i, ZERO);
         }
     }
 
+    /**
+     * Counts occurrences of bitmap values in the provided list of ImagemBitmapDTO objects and updates the count map accordingly.
+     * @param countMap Map to update with bitmap value occurrences.
+     * @param bitmapList List of ImagemBitmapDTO objects representing bitmap data.
+     */
     private void countBitmapOccurrences(Map<Integer, Integer> countMap, List<ImagemBitmapDTO> bitmapList) {
         for (ImagemBitmapDTO dto : bitmapList) {
             List<Integer> values = dto.getNumbers();
@@ -43,6 +60,11 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
         }
     }
 
+    /**
+     * Generates a list of ResponseDTO objects based on the provided count map.
+     * @param countMap Map containing bitmap values as keys and their occurrences as values.
+     * @return List of ResponseDTO objects containing bitmap value and occurrence data.
+     */
     private List<ResponseDTO> getResponse(Map<Integer, Integer> countMap) {
         List<ResponseDTO> responseDTOS = new ArrayList<>();
         for (int i = ZERO; i <= FIFTEEN; i++) {
