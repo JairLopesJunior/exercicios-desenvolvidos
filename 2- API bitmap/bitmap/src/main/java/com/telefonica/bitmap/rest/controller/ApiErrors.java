@@ -1,4 +1,4 @@
-package com.telefonica.bitmap.rest;
+package com.telefonica.bitmap.rest.controller;
 
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.telefonica.superhero.service;
 
-import com.telefonica.superhero.rest.dto.RaceData;
+import com.telefonica.superhero.rest.dto.RaceDataDTO;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface ReaderLogService {
      * @param fileName Name of the file containing race data.
      * @return List of RaceData objects parsed from the file.
      */
-    List<RaceData> getData(String fileName);
+    List<RaceDataDTO> getData(String fileName);
 }

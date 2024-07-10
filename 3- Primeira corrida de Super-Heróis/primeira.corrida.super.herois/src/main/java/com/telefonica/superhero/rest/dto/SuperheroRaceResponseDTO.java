@@ -8,7 +8,7 @@ import java.time.LocalTime;
  * Data Transfer Object (DTO) representing response data related to a race event.
  */
 @Data
-public class ResponseDTO {
+public class SuperheroRaceResponseDTO {
 
     /**
      * Finishing position of the superhero in the race.

@@ -1,7 +1,7 @@
 package com.telefonica.bitmap.service;
 
-import com.telefonica.bitmap.rest.dto.ImagemBitmapDTO;
-import com.telefonica.bitmap.rest.dto.ResponseDTO;
+import com.telefonica.bitmap.rest.dto.ImagemBitmapRequestDTO;
+import com.telefonica.bitmap.rest.dto.ImagemBitmapResponseDTO;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface ImagemBitmapService {
      * @param bitmapList List of ImagemBitmapDTO objects representing bitmap data.
      * @return List of ResponseDTO objects containing processing results.
      */
-    List<ResponseDTO> getData(List<ImagemBitmapDTO> bitmapList);
+    List<ImagemBitmapResponseDTO> getData(List<ImagemBitmapRequestDTO> bitmapList);
 }

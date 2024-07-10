@@ -1,7 +1,7 @@
 package com.telefonica.superhero.service.impl;
 
 import com.telefonica.superhero.exception.CustomRaceDataException;
-import com.telefonica.superhero.rest.dto.RaceData;
+import com.telefonica.superhero.rest.dto.RaceDataDTO;
 import com.telefonica.superhero.service.ReaderLogService;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
@@ -22,66 +22,49 @@ import java.util.*;
 @Service
 public class ReaderLogServiceImpl implements ReaderLogService {
 
-    private static final Integer ZERO = 0;
+    private static final String DELIMITER_SEMICOLON = ";";
 
-    private static final Integer ONE = 1;
+    private static final String DELIMITER_COMMA = ",";
 
-    private static final Integer TWO = 2;
-
-    private static final Integer THREE = 3;
-
-    private static final Integer FOUR = 4;
-
-    private static final Integer FIVE = 5;
-
-    private static final String SEMICOLON = ";";
-
-    private static final String COMMA = ",";
-
-    private static final String POINT = ".";
+    private static final String DELIMITER_POINT = ".";
 
     private static final String MESSAGE_ERROR = "Error processing race data file";
 
-    /**
-     * Retrieves race data from a specified log file.
-     *
-     * @param fileName The name of the log file containing race data.
-     * @return A list of RaceData objects parsed from the log file.
-     * @throws CustomRaceDataException If there is an error processing the race data file.
-     */
-    public List<RaceData> getData(String fileName) {
+    public List<RaceDataDTO> getData(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String linha;
 
-            List<RaceData> raceDataList = new ArrayList<>();
+            List<RaceDataDTO> raceDataList = new ArrayList<>();
             while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(SEMICOLON);
-                if (dados.length < FIVE) {
+                String[] dados = linha.split(DELIMITER_SEMICOLON);
+                if (dados.length < 5) {
                     continue;
                 }
 
-                RaceData raceData = new RaceData();
+                RaceDataDTO raceData = new RaceDataDTO();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
                 DateFormat dateFormat = new SimpleDateFormat("m:ss.SSS");
 
-                raceData.setHour(LocalTime.parse(dados[ZERO], formatter));
+                raceData.setHour(LocalTime.parse(dados[0], formatter));
 
-                raceData.setSuperHero(Optional.ofNullable(dados[ONE]).orElse(Strings.EMPTY));
+                raceData.setSuperHero(Optional.ofNullable(dados[1]).orElse(Strings.EMPTY));
 
-                if (!dados[TWO].isEmpty()) {
-                    raceData.setBackNumber(Integer.valueOf(dados[TWO]));
+                if (!dados[2].isEmpty()) {
+                    raceData.setBackNumber(Integer.valueOf(dados[2]));
                 }
 
-                raceData.setLapTime(dateFormat.parse(dados[THREE]).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
+                raceData.setLapTime(dateFormat.parse(dados[3]).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
 
-                if (!dados[FOUR].isEmpty()) {
-                    raceData.setAverageLapSpeed(Double.valueOf(dados[FOUR].replace(COMMA, POINT)));
+                if (!dados[4].isEmpty()) {
+                    raceData.setAverageLapSpeed(Double.valueOf(dados[4].replace(DELIMITER_COMMA, DELIMITER_POINT)));
                 }
                 raceDataList.add(raceData);
             }
             return raceDataList;
         } catch (IOException | ParseException | NumberFormatException e) {
             throw new CustomRaceDataException(MESSAGE_ERROR, e);
+        } catch (Exception ex) {
+            throw new CustomRaceDataException(MESSAGE_ERROR, ex);
         }
     }
 }

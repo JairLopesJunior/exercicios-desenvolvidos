@@ -1,6 +1,6 @@
-package com.telefonica;
+package main.java.com.telefonica;
 
-import com.telefonica.service.impl.ImagemBitmapServiceImpl;
+import main.java.com.telefonica.service.impl.ImagemBitmapServiceImpl;
 
 import java.util.*;
 

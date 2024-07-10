@@ -2,7 +2,6 @@ package com.telefonica.bitmap.rest.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.telefonica.bitmap.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
  * Controller advice to handle exceptions globally for all REST controllers.
  */
 @RestControllerAdvice
-public class ApplicationControllerAdvice {
+public class ImagemBitmapControllerAdvice {
 
     /**
      * Handles validation exceptions thrown during method parameter validation.
@@ -30,7 +29,7 @@ public class ApplicationControllerAdvice {
     public ApiErrors handlerMethodValidationException(HandlerMethodValidationException ex ){
         List<String> errors = ex.getAllErrors()
                 .stream()
-                .map(erro -> erro.getDefaultMessage())
+                .map(error -> error.getDefaultMessage())
                 .collect(Collectors.toList());
         return new ApiErrors(errors);
     }

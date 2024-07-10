@@ -9,7 +9,7 @@ import java.util.List;
  * Data transfer object (DTO) for representing bitmap data.
  */
 @Data
-public class ImagemBitmapDTO {
+public class ImagemBitmapRequestDTO {
 
     /**
      * List of integers representing bitmap numbers.

@@ -1,0 +1,19 @@
+{
+	"info": {
+		"_postman_id": "b24f39df-8f86-42c0-9d1b-c9bdbda20dcf",
+		"name": "exercise-3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15775064",
+		"_collection_link": "https://lunar-satellite-362780.postman.co/workspace/5bf93fa3-1629-4b7f-8397-193cef37050f/collection/15775064-b24f39df-8f86-42c0-9d1b-c9bdbda20dcf?action=share&source=collection_link&creator=15775064"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

@@ -1,4 +1,4 @@
-package com.telefonica.service;
+package main.java.com.telefonica.service;
 
 import java.util.List;
 import java.util.Map;

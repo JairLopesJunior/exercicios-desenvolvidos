@@ -1,7 +1,7 @@
 package com.telefonica.superhero.service;
 
-import com.telefonica.superhero.rest.dto.RaceData;
-import com.telefonica.superhero.rest.dto.ResponseDTO;
+import com.telefonica.superhero.rest.dto.RaceDataDTO;
+import com.telefonica.superhero.rest.dto.SuperheroRaceResponseDTO;
 import com.telefonica.superhero.service.impl.ReaderLogServiceImpl;
 import com.telefonica.superhero.service.impl.SuperheroRaceServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -25,16 +25,6 @@ import static org.hamcrest.Matchers.*;
 @ExtendWith(MockitoExtension.class)
 public class SuperheroRaceServiceTest {
 
-    private static final Integer ZERO = 0;
-
-    private static final Integer ONE = 1;
-
-    private static final Integer TWO = 2;
-
-    private static final Integer THIRTY_EIGHT = 38;
-
-    private static final Double FORTY_FOUR_AND_FOUR_SEVENTY_FIVE = 44.275;
-
     private static final String SUPERMAN = "Superman";
 
     @InjectMocks
@@ -45,31 +35,31 @@ public class SuperheroRaceServiceTest {
 
     @Test
     public void getData() throws ParseException {
-        List<RaceData> raceDataList = new ArrayList<>();
-        RaceData raceData = new RaceData();
+        List<RaceDataDTO> raceDataList = new ArrayList<>();
+        RaceDataDTO raceData = new RaceDataDTO();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         raceData.setHour(LocalTime.parse("23:49:08.277", formatter));
-        raceData.setSuperHero(String.format("%d–%s", THIRTY_EIGHT, SUPERMAN));
-        raceData.setBackNumber(ONE);
+        raceData.setSuperHero(String.format("%d–%s", 38, SUPERMAN));
+        raceData.setBackNumber(1);
         DateFormat dateFormat = new SimpleDateFormat("m:ss.SSS");
         raceData.setLapTime(dateFormat.parse("1:02.852").toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
-        raceData.setAverageLapSpeed(FORTY_FOUR_AND_FOUR_SEVENTY_FIVE);
+        raceData.setAverageLapSpeed(44.275);
         raceDataList.add(raceData);
 
 
-        List<ResponseDTO> responseDTOs =  new ArrayList<>();
-        ResponseDTO dto = new ResponseDTO();
+        List<SuperheroRaceResponseDTO> responseDTOs =  new ArrayList<>();
+        SuperheroRaceResponseDTO dto = new SuperheroRaceResponseDTO();
         dto.setFinishingPosition(1);
-        dto.setSuperHeroCode(THIRTY_EIGHT);
+        dto.setSuperHeroCode(38);
         dto.setSuperHeroName(SUPERMAN);
         dto.setNumberLapsCompleted(1);
-        dto.setTotalTestTime(LocalTime.of(ZERO, ONE, TWO));
+        dto.setTotalTestTime(LocalTime.of(0, 1, 2));
 
         DateTimeFormatter formatterTwo = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         dto.setMediaSpeed(LocalTime.parse("00:01:02.852", formatterTwo));
         dto.setBestLapRace(LocalTime.parse("00:01:02.852", formatterTwo));
 
-        dto.setSuperheroAverageSpeedDuringRace(FORTY_FOUR_AND_FOUR_SEVENTY_FIVE);
+        dto.setSuperheroAverageSpeedDuringRace(44.275);
         responseDTOs.add(dto);
 
         when(this.readerLogService.getData(any())).thenReturn(raceDataList);

@@ -1,6 +1,7 @@
 package com.telefonica.superhero.service;
 
-import com.telefonica.superhero.rest.dto.RaceData;
+import com.telefonica.superhero.exception.CustomRaceDataException;
+import com.telefonica.superhero.rest.dto.RaceDataDTO;
 import com.telefonica.superhero.service.impl.ReaderLogServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,39 +18,41 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class ReaderLogServiceTest {
 
-    private static final Integer ONE = 1;
-
-    private static final Integer THIRTY_EIGHT = 38;
-
     private static final String SUPERMAN = "Superman";
 
     private static final String FILE_NAME = "fileTest.txt";
-
-    private static final Double FORTY_FOUR_AND_FOUR_SEVENTY_FIVE = 44.275;
 
     @InjectMocks
     public ReaderLogServiceImpl service;
 
     @Test
     public void getData_success() throws ParseException {
-        List<RaceData> raceDataList = new ArrayList<>();
-        RaceData raceData = new RaceData();
+        List<RaceDataDTO> raceDataList = new ArrayList<>();
+        RaceDataDTO raceData = new RaceDataDTO();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
         raceData.setHour(LocalTime.parse("23:49:08.277", formatter));
-        raceData.setSuperHero(String.format("%d–%s", THIRTY_EIGHT, SUPERMAN));
-        raceData.setBackNumber(ONE);
+        raceData.setSuperHero(String.format("%d–%s", 38, SUPERMAN));
+        raceData.setBackNumber(1);
         DateFormat dateFormat = new SimpleDateFormat("m:ss.SSS");
         raceData.setLapTime(dateFormat.parse("1:02.852").toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
-        raceData.setAverageLapSpeed(FORTY_FOUR_AND_FOUR_SEVENTY_FIVE);
+        raceData.setAverageLapSpeed(44.275);
         raceDataList.add(raceData);
 
-        List<RaceData> result = this.service.getData(FILE_NAME);
+        List<RaceDataDTO> result = this.service.getData(FILE_NAME);
 
         assertThat(result, notNullValue());
         assertThat(result, is(equalTo(raceDataList)));
+    }
+
+    @Test
+    public void testGetDataThrowsCustomRaceDataException() {
+        String fileName = "nonexistent_file.txt";
+
+        assertThrows(CustomRaceDataException.class, () -> this.service.getData(fileName));
     }
 }

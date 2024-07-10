@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RaceData {
+public class RaceDataDTO {
 
     /**
      * Time of the race event.

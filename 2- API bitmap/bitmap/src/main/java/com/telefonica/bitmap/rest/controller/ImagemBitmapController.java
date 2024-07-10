@@ -1,10 +1,9 @@
 package com.telefonica.bitmap.rest.controller;
 
-import com.telefonica.bitmap.rest.dto.ImagemBitmapDTO;
-import com.telefonica.bitmap.rest.dto.ResponseDTO;
-import com.telefonica.bitmap.service.impl.ImagemBitmapServiceImpl;
+import com.telefonica.bitmap.rest.dto.ImagemBitmapRequestDTO;
+import com.telefonica.bitmap.rest.dto.ImagemBitmapResponseDTO;
+import com.telefonica.bitmap.service.ImagemBitmapService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +15,13 @@ import java.util.List;
 @RequestMapping("/api/bitmap")
 public class ImagemBitmapController {
 
-    private ImagemBitmapServiceImpl service;
+    private ImagemBitmapService service;
 
     /**
      * Constructor injection for ImagemBitmapServiceImpl dependency.
      * @param service ImagemBitmapServiceImpl instance to handle bitmap operations.
      */
-    @Autowired
-    public ImagemBitmapController( ImagemBitmapServiceImpl service ) {
+    public ImagemBitmapController( ImagemBitmapService service ) {
         this.service = service;
     }
 
@@ -34,7 +32,7 @@ public class ImagemBitmapController {
      * @return List of ResponseDTO objects containing processing results.
      */
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public List<ResponseDTO> getData(@Valid @RequestBody List<ImagemBitmapDTO> bitmapList) {
+    public List<ImagemBitmapResponseDTO> getData(@Valid @RequestBody List<ImagemBitmapRequestDTO> bitmapList) {
         return this.service.getData(bitmapList);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
  * Data transfer object (DTO) for representing response data.
  */
 @Data
-public class ResponseDTO {
+public class ImagemBitmapResponseDTO {
 
     /**
      * Entry number corresponding to bitmap value.

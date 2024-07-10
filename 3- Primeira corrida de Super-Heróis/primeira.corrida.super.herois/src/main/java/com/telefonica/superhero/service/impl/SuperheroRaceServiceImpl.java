@@ -1,9 +1,9 @@
 package com.telefonica.superhero.service.impl;
 
-import com.telefonica.superhero.rest.dto.RaceData;
-import com.telefonica.superhero.rest.dto.ResponseDTO;
+import com.telefonica.superhero.rest.dto.RaceDataDTO;
+import com.telefonica.superhero.rest.dto.SuperheroRaceResponseDTO;
+import com.telefonica.superhero.service.ReaderLogService;
 import com.telefonica.superhero.service.SuperheroRaceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -17,70 +17,52 @@ import java.util.stream.Collectors;
 @Service
 public class SuperheroRaceServiceImpl implements SuperheroRaceService {
 
-    private static final Integer ZERO = 0;
-
-    private static final Integer ONE = 1;
-
-    private static final Integer TWO = 2;
-
     private static final String FILE_NAME = "file.txt";
 
     private static final String HYPHEN = "–";
 
-    private ReaderLogServiceImpl readerLogService;
+    private ReaderLogService readerLogService;
 
     /**
      * Constructor injection of ReaderLogServiceImpl.
      *
      * @param readerLogService Instance of ReaderLogServiceImpl to retrieve race data.
      */
-    @Autowired
-    public SuperheroRaceServiceImpl(ReaderLogServiceImpl readerLogService) {
+    public SuperheroRaceServiceImpl(ReaderLogService readerLogService) {
         this.readerLogService = readerLogService;
     }
 
-    /**
-     * Retrieves processed race data and calculates race statistics.
-     *
-     * @return A sorted list of ResponseDTO objects containing race statistics.
-     */
-    public List<ResponseDTO> getData() {
+    public List<SuperheroRaceResponseDTO> getData() {
+        // Created a file in the root because it was requested
         var raceDataList = this.readerLogService.getData(FILE_NAME);
 
         var groupedBySuperHero = raceDataList.stream()
-                .collect(Collectors.groupingBy(RaceData::getSuperHero));
+                .collect(Collectors.groupingBy(RaceDataDTO::getSuperHero));
 
-        RaceData bestLapRace = raceDataList.stream()
-                .min(Comparator.comparing(RaceData::getLapTime))
+        RaceDataDTO bestLapRace = raceDataList.stream()
+                .min(Comparator.comparing(RaceDataDTO::getLapTime))
                 .get();
 
         var responseDTOS = this.getResponseDTO(groupedBySuperHero, bestLapRace);
 
         Collections.sort(responseDTOS,
-                Comparator.comparingInt(ResponseDTO::getNumberLapsCompleted).reversed()
+                Comparator.comparingInt(SuperheroRaceResponseDTO::getNumberLapsCompleted).reversed()
         );
 
         return this.getFinishingPosition(responseDTOS);
     }
 
-    /**
-     * Creates ResponseDTO objects from grouped race data and calculates statistics.
-     *
-     * @param groupedBySuperHero Map grouping RaceData by superhero.
-     * @param bestLapRace        RaceData object representing the superhero with the best lap time.
-     * @return List of ResponseDTO objects containing race statistics.
-     */
-    private List<ResponseDTO> getResponseDTO(Map<String, List<RaceData>> groupedBySuperHero, RaceData bestLapRace) {
-        Integer backNumber = ZERO;
-        ResponseDTO dto = new ResponseDTO();
-        List<ResponseDTO> responseDTOS = new ArrayList<>();
-        for (List<RaceData> list : groupedBySuperHero.values()) {
-            for (RaceData hero : list) {
-                dto = new ResponseDTO();
-                if (hero.getSuperHero().contains(HYPHEN) && hero.getSuperHero().split(HYPHEN).length == TWO) {
+    private List<SuperheroRaceResponseDTO> getResponseDTO(Map<String, List<RaceDataDTO>> groupedBySuperHero, RaceDataDTO bestLapRace) {
+        Integer backNumber = 0;
+        SuperheroRaceResponseDTO dto = new SuperheroRaceResponseDTO();
+        List<SuperheroRaceResponseDTO> responseDTOS = new ArrayList<>();
+        for (List<RaceDataDTO> list : groupedBySuperHero.values()) {
+            for (RaceDataDTO hero : list) {
+                dto = new SuperheroRaceResponseDTO();
+                if (hero.getSuperHero().contains(HYPHEN) && hero.getSuperHero().split(HYPHEN).length == 2) {
                     String[] codeName = hero.getSuperHero().split(HYPHEN);
-                    dto.setSuperHeroCode(Integer.valueOf(codeName[ZERO]));
-                    dto.setSuperHeroName(codeName[ONE]);
+                    dto.setSuperHeroCode(Integer.valueOf(codeName[0]));
+                    dto.setSuperHeroName(codeName[1]);
                 }
 
                 if (hero.getBackNumber() != null) {
@@ -95,40 +77,28 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
 
             DoubleSummaryStatistics statistics = list
                     .stream()
-                    .collect(Collectors.summarizingDouble(RaceData::getAverageLapSpeed));
+                    .collect(Collectors.summarizingDouble(RaceDataDTO::getAverageLapSpeed));
 
             Collections.sort(list,
-                    Comparator.comparing(RaceData::getLapTime)
+                    Comparator.comparing(RaceDataDTO::getLapTime)
             );
-            dto.setMediaSpeed(list.get(ZERO).getLapTime());
+            dto.setMediaSpeed(list.get(0).getLapTime());
             dto.setBestLapRace(bestLapRace.getLapTime());
             dto.setSuperheroAverageSpeedDuringRace(statistics.getAverage());
             responseDTOS.add(dto);
-            backNumber = ZERO;
+            backNumber = 0;
         }
         return responseDTOS;
     }
 
-    /**
-     * Sets finishing positions based on the order of ResponseDTO objects.
-     *
-     * @param responseDTOS List of ResponseDTO objects to set finishing positions.
-     * @return Updated list of ResponseDTO objects with finishing positions.
-     */
-    private List<ResponseDTO> getFinishingPosition(List<ResponseDTO> responseDTOS) {
-        for (int i = ZERO; i < responseDTOS.size(); i++) {
-            responseDTOS.get(i).setFinishingPosition((i + ONE));
+    private List<SuperheroRaceResponseDTO> getFinishingPosition(List<SuperheroRaceResponseDTO> responseDTOS) {
+        for (int i = 0; i < responseDTOS.size(); i++) {
+            responseDTOS.get(i).setFinishingPosition((i + 1));
         }
         return responseDTOS;
     }
 
-    /**
-     * Calculates the total duration of all laps in a race.
-     *
-     * @param list List of RaceData objects representing laps of a race.
-     * @return Total duration of all laps.
-     */
-    private Duration getTotalDuration(List<RaceData> list) {
+    private Duration getTotalDuration(List<RaceDataDTO> list) {
         return list.stream()
                 .filter(r -> r.getLapTime() != null)
                 .map(obj -> Duration.between(LocalTime.MIDNIGHT, obj.getLapTime()))

@@ -1,6 +1,6 @@
 package com.telefonica.superhero.service;
 
-import com.telefonica.superhero.rest.dto.ResponseDTO;
+import com.telefonica.superhero.rest.dto.SuperheroRaceResponseDTO;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface SuperheroRaceService {
      *
      * @return List of ResponseDTO objects containing superhero race information.
      */
-    List<ResponseDTO> getData();
+    List<SuperheroRaceResponseDTO> getData();
 }
