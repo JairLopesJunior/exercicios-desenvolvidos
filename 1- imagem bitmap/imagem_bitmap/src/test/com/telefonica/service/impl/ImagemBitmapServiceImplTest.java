@@ -53,14 +53,14 @@ public class ImagemBitmapServiceImplTest {
 
     @Test
     public void testInitializeBitmap() {
-        String input = "1 2 16\n\n";
+        String input = "1 2 1\n\n";
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
         ImagemBitmapService imagemBitmapService = new ImagemBitmapServiceImpl(scanner);
 
         Map<Integer, Integer> countMap = new HashMap<>();
         imagemBitmapService.initializeBitmap(countMap);
 
-        for (int i = 0; i <= 15; i++) {
+        for (int i = 0; i <= ImagemBitmapServiceImpl.BITMAP_MAX_VALUE; i++) {
             assertEquals(0, countMap.get(i));
         }
     }
@@ -92,11 +92,11 @@ public class ImagemBitmapServiceImplTest {
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
         ImagemBitmapService imagemBitmapService = new ImagemBitmapServiceImpl(scanner);
         Map<Integer, Integer> countMap = new HashMap<>();
-        for (int i = 0; i <= 15; i++) {
+        for (int i = 0; i <= ImagemBitmapServiceImpl.BITMAP_MAX_VALUE; i++) {
             countMap.put(i, i);
         }
 
-        String expectedResponse = "0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, ";
+        String expectedResponse = "0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15";
 
         String response = imagemBitmapService.showResponse(countMap);
 

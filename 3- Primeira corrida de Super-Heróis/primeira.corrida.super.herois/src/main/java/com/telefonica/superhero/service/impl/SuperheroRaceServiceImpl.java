@@ -19,7 +19,7 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
 
     private static final String FILE_NAME = "file.txt";
 
-    private static final String HYPHEN = "–";
+    private static final String SEPARATOR_HYPHEN = "–";
 
     private ReaderLogService readerLogService;
 
@@ -59,8 +59,8 @@ public class SuperheroRaceServiceImpl implements SuperheroRaceService {
         for (List<RaceDataDTO> list : groupedBySuperHero.values()) {
             for (RaceDataDTO hero : list) {
                 dto = new SuperheroRaceResponseDTO();
-                if (hero.getSuperHero().contains(HYPHEN) && hero.getSuperHero().split(HYPHEN).length == 2) {
-                    String[] codeName = hero.getSuperHero().split(HYPHEN);
+                if (hero.getSuperHero().contains(SEPARATOR_HYPHEN) && hero.getSuperHero().split(SEPARATOR_HYPHEN).length == 2) {
+                    String[] codeName = hero.getSuperHero().split(SEPARATOR_HYPHEN);
                     dto.setSuperHeroCode(Integer.valueOf(codeName[0]));
                     dto.setSuperHeroName(codeName[1]);
                 }

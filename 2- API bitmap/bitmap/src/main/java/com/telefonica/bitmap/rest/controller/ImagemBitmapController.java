@@ -33,6 +33,6 @@ public class ImagemBitmapController {
      */
     @PostMapping(produces = "application/json", consumes = "application/json")
     public List<ImagemBitmapResponseDTO> getData(@Valid @RequestBody List<ImagemBitmapRequestDTO> bitmapList) {
-        return this.service.getData(bitmapList);
+        return this.service.getBitmapOccurrenceList(bitmapList);
     }
 }

@@ -1,5 +1,6 @@
 package main.java.com.telefonica;
 
+import main.java.com.telefonica.service.ImagemBitmapService;
 import main.java.com.telefonica.service.impl.ImagemBitmapServiceImpl;
 
 import java.util.*;
@@ -18,7 +19,7 @@ public class ImagemBitmap {
     public static void main(String[] args) {
         scan = new Scanner(System.in);
 
-        ImagemBitmapServiceImpl service = new ImagemBitmapServiceImpl(scan);
+        ImagemBitmapService service = new ImagemBitmapServiceImpl(scan);
 
         List<int[]> bitmapList = new ArrayList<>();
         service.getData(bitmapList);

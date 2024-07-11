@@ -11,10 +11,6 @@ import java.util.List;
  */
 public class RangeValidator implements ConstraintValidator<ValidRange, List<Integer>> {
 
-    private static final int ZERO = 0;
-
-    private static final int FIFTEEN = 15;
-
     /**
      * Método de inicialização da validação.
      * @param constraintAnnotation A anotação de restrição a ser inicializada.
@@ -36,7 +32,7 @@ public class RangeValidator implements ConstraintValidator<ValidRange, List<Inte
         }
 
         for (Integer value : values) {
-            if (value == null || value < ZERO || value > FIFTEEN) {
+            if (value == null || value < 0 || value > 15) {
                 return false;
             }
         }

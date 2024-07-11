@@ -3,9 +3,9 @@ package com.telefonica.superhero.service;
 import com.telefonica.superhero.exception.CustomRaceDataException;
 import com.telefonica.superhero.rest.dto.RaceDataDTO;
 import com.telefonica.superhero.service.impl.ReaderLogServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.DateFormat;
@@ -27,8 +27,12 @@ public class ReaderLogServiceTest {
 
     private static final String FILE_NAME = "fileTest.txt";
 
-    @InjectMocks
-    public ReaderLogServiceImpl service;
+    private ReaderLogService service;
+
+    @BeforeEach()
+    void setup() {
+        this.service = new ReaderLogServiceImpl();
+    }
 
     @Test
     public void getData_success() throws ParseException {

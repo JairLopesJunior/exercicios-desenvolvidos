@@ -6,7 +6,6 @@ import com.telefonica.bitmap.service.impl.ImagemBitmapServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -21,10 +20,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @ExtendWith(MockitoExtension.class)
 public class ImagemBitmapServiceImplTest {
 
-    private static final int MAX_VALUE = 15;
-
-    @InjectMocks
-    private ImagemBitmapServiceImpl service;
+    private ImagemBitmapService service;
 
     private List<ImagemBitmapRequestDTO> bitmapList;
 
@@ -38,9 +34,9 @@ public class ImagemBitmapServiceImplTest {
 
     @BeforeEach()
     void setup() {
+        service = new ImagemBitmapServiceImpl();
         this.bitmapList = new ArrayList<>();
         this.dto = new ImagemBitmapRequestDTO();
-
         this.responseDTOS = new ArrayList<>();
     }
 
@@ -52,7 +48,7 @@ public class ImagemBitmapServiceImplTest {
 
         this.getResponseDTOs(1);
 
-        List<ImagemBitmapResponseDTO> fountResponseDTOS = this.service.getData(bitmapList);
+        List<ImagemBitmapResponseDTO> fountResponseDTOS = this.service.getBitmapOccurrenceList(bitmapList);
 
         assertThat(fountResponseDTOS, notNullValue());
         assertThat(fountResponseDTOS, is(equalTo(this.responseDTOS)));
@@ -66,14 +62,14 @@ public class ImagemBitmapServiceImplTest {
 
         this.getResponseDTOs(2);
 
-        List<ImagemBitmapResponseDTO> fountResponseDTOS = this.service.getData(bitmapList);
+        List<ImagemBitmapResponseDTO> fountResponseDTOS = this.service.getBitmapOccurrenceList(bitmapList);
 
         assertThat(fountResponseDTOS, notNullValue());
         assertThat(fountResponseDTOS, is(equalTo(this.responseDTOS)));
     }
 
     private void getResponseDTOs(Integer numberOccurrence) {
-        for (int i = 0; i <= MAX_VALUE; i++) {
+        for (int i = 0; i <= ImagemBitmapServiceImpl.BITMAP_MAX_VALUE; i++) {
             this.responseDTO = new ImagemBitmapResponseDTO();
             this.responseDTO.setEntryNumber(i);
             if (this.integers.contains(i)) {

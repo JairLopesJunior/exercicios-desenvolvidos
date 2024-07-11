@@ -16,9 +16,9 @@ import java.util.Map;
 @Service
 public class ImagemBitmapServiceImpl implements ImagemBitmapService {
 
-    private static final int MAX_VALUE = 15;
+    public static final int BITMAP_MAX_VALUE = 15;
 
-    public List<ImagemBitmapResponseDTO> getData(List<ImagemBitmapRequestDTO> bitmapList) {
+    public List<ImagemBitmapResponseDTO> getBitmapOccurrenceList(List<ImagemBitmapRequestDTO> bitmapList) {
         Map<Integer, Integer> countMap = new HashMap<>();
         initializeBitmap(countMap);
 
@@ -28,7 +28,7 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
     }
 
     private void initializeBitmap(Map<Integer, Integer> countMap) {
-        for (int i = 0; i <= MAX_VALUE; i++) {
+        for (int i = 0; i <= BITMAP_MAX_VALUE; i++) {
             countMap.put(i, 0);
         }
     }
@@ -44,7 +44,7 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
 
     private List<ImagemBitmapResponseDTO> getResponse(Map<Integer, Integer> countMap) {
         List<ImagemBitmapResponseDTO> responseDTOS = new ArrayList<>();
-        for (int i = 0; i <= MAX_VALUE; i++) {
+        for (int i = 0; i <= BITMAP_MAX_VALUE; i++) {
             ImagemBitmapResponseDTO dto = new ImagemBitmapResponseDTO();
             dto.setEntryNumber(i);
             dto.setNumberOccurrence(countMap.get(i));

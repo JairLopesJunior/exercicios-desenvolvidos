@@ -15,5 +15,5 @@ public interface ImagemBitmapService {
      * @param bitmapList List of ImagemBitmapDTO objects representing bitmap data.
      * @return List of ResponseDTO objects containing processing results.
      */
-    List<ImagemBitmapResponseDTO> getData(List<ImagemBitmapRequestDTO> bitmapList);
+    List<ImagemBitmapResponseDTO> getBitmapOccurrenceList(List<ImagemBitmapRequestDTO> bitmapList);
 }

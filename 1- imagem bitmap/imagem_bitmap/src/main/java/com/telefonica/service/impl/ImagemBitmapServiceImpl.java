@@ -15,13 +15,17 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
 
     private Scanner scan;
 
-    private static final int MAX_VALUE = 15;
+    public static final int BITMAP_MAX_VALUE = 15;
 
     private static final String DELIMITER_BLANK_SPACE = " ";
 
     private static final String TWO_COLON_WITH_SPACE = ": ";
 
     private static final String COMMA_WITH_SPACE = ", ";
+
+    private static final int MIN_VALUE_RANGE_ALLOWED = 0;
+
+    private static final int MAX_VALUE_RANGE_ALLOWED = 15;
 
     /**
      * Constructor to initialize with a Scanner object for input.
@@ -54,7 +58,7 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
                 row[i] = Integer.parseInt(values[i]);
 
                 // Validate numeric range [0, 15]
-                if (row[i] < 0 || row[i] > 15) {
+                if (row[i] < MIN_VALUE_RANGE_ALLOWED || row[i] > MAX_VALUE_RANGE_ALLOWED) {
                     throw new InvalidNumberRangeException(String.format("Invalid row (contains numbers less than zero or greater than 15): %s", line));
                 }
             }
@@ -64,7 +68,7 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
 
     @Override
     public void initializeBitmap(Map<Integer, Integer> countMap) {
-        for (int i = 0; i <= MAX_VALUE; i++) {
+        for (int i = 0; i <= BITMAP_MAX_VALUE; i++) {
             countMap.put(i, 0);
         }
     }
@@ -83,8 +87,11 @@ public class ImagemBitmapServiceImpl implements ImagemBitmapService {
     public String showResponse(Map<Integer, Integer> countMap) {
         StringBuilder output = new StringBuilder();
 
-        for (int i = 0; i <= MAX_VALUE; i++) {
-            output.append(i).append(TWO_COLON_WITH_SPACE).append(countMap.get(i)).append(COMMA_WITH_SPACE);
+        for (int i = 0; i <= BITMAP_MAX_VALUE; i++) {
+            output.append(i).append(TWO_COLON_WITH_SPACE).append(countMap.get(i));
+            if (i < BITMAP_MAX_VALUE) {
+                output.append(COMMA_WITH_SPACE);
+            }
         }
 
         return output.toString();

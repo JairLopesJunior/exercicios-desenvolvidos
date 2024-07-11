@@ -1,6 +1,8 @@
 package com.telefonica.superhero.service.impl;
 
+import com.telefonica.superhero.domain.enums.RaceDataEnum;
 import com.telefonica.superhero.exception.CustomRaceDataException;
+import com.telefonica.superhero.exception.GenericApplicationException;
 import com.telefonica.superhero.rest.dto.RaceDataDTO;
 import com.telefonica.superhero.service.ReaderLogService;
 import org.apache.logging.log4j.util.Strings;
@@ -30,6 +32,8 @@ public class ReaderLogServiceImpl implements ReaderLogService {
 
     private static final String MESSAGE_ERROR = "Error processing race data file";
 
+    private static final int MAX_ATTRIBUTE_NUMBER = 5;
+
     public List<RaceDataDTO> getData(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String linha;
@@ -37,7 +41,7 @@ public class ReaderLogServiceImpl implements ReaderLogService {
             List<RaceDataDTO> raceDataList = new ArrayList<>();
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(DELIMITER_SEMICOLON);
-                if (dados.length < 5) {
+                if (dados.length < MAX_ATTRIBUTE_NUMBER) {
                     continue;
                 }
 
@@ -45,18 +49,18 @@ public class ReaderLogServiceImpl implements ReaderLogService {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
                 DateFormat dateFormat = new SimpleDateFormat("m:ss.SSS");
 
-                raceData.setHour(LocalTime.parse(dados[0], formatter));
+                raceData.setHour(LocalTime.parse(dados[RaceDataEnum.HOUR.getKey()], formatter));
 
-                raceData.setSuperHero(Optional.ofNullable(dados[1]).orElse(Strings.EMPTY));
+                raceData.setSuperHero(Optional.ofNullable(dados[RaceDataEnum.SUPER_HERO.getKey()]).orElse(Strings.EMPTY));
 
                 if (!dados[2].isEmpty()) {
-                    raceData.setBackNumber(Integer.valueOf(dados[2]));
+                    raceData.setBackNumber(Integer.valueOf(dados[RaceDataEnum.BACK_NUMBER.getKey()]));
                 }
 
-                raceData.setLapTime(dateFormat.parse(dados[3]).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
+                raceData.setLapTime(dateFormat.parse(dados[RaceDataEnum.LapTime.getKey()]).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime());
 
                 if (!dados[4].isEmpty()) {
-                    raceData.setAverageLapSpeed(Double.valueOf(dados[4].replace(DELIMITER_COMMA, DELIMITER_POINT)));
+                    raceData.setAverageLapSpeed(Double.valueOf(dados[RaceDataEnum.AVERAGE_LAP_SPEED.getKey()].replace(DELIMITER_COMMA, DELIMITER_POINT)));
                 }
                 raceDataList.add(raceData);
             }
@@ -64,7 +68,7 @@ public class ReaderLogServiceImpl implements ReaderLogService {
         } catch (IOException | ParseException | NumberFormatException e) {
             throw new CustomRaceDataException(MESSAGE_ERROR, e);
         } catch (Exception ex) {
-            throw new CustomRaceDataException(MESSAGE_ERROR, ex);
+            throw new GenericApplicationException(MESSAGE_ERROR, ex);
         }
     }
 }
